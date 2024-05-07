@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+	<title>Temperature Converter</title>
+	<style>
+		
+		*{
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+			font-family: "Open Sans", sans-serif;
+		}
+
+		*::selection{
+			background-color: bisque;
+			color: black;
+		}
+		html,body{
+			min-height: 100%;
+			min-width: 100%;
+			background-color: rgb(158, 107, 101);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			
+		}
+
+		#main{
+			width: 25em;
+			height: 30em;
+			background-color: white;
+			border-radius: 2%;
+			box-shadow: 0 0 0.5em 0.1em rgb(158, 107, 101);
+			position: relative;
+		}
+
+		h1{
+			/* border: 2px solid; */
+			width: 100%;
+			height: 15%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-weight: 500;
+			color: rgb(75, 74, 74);
+			text-shadow: 0 0 1vmin rgb(177, 139, 58);
+			font-size: 4vmin;
+		}
+
+		h1 span{
+			color: rgb(235, 84, 84);
+			text-shadow: 0 0 1vmin rgb(177, 139, 58);
+		}
+		.value-box{
+			/* border: 2px solid; */
+			height: 10%;
+			width: 100%;
+			display: flex;
+			align-items: center;
+			justify-content: space-around;
+			gap: 2%;
+			padding-inline: 2%;
+		}
+
+		.tempNum{
+			/* border: 2px solid; */
+			height: 80%;
+			width: 70%;
+			
+			display: flex;
+			align-items: flex-end;
+			justify-content: flex-end;
+		}
+
+		.tempNum input{
+			width: 100%;
+			height: 80%;
+			outline: none;
+			border: none;
+			border-bottom: 0.2em inset lightblue;
+			border-right: 0.1em outset lightblue;
+			display: flex;
+			align-items: center;
+			justify-content: flex-end;
+			border-radius: 0.5em;
+			padding-left: 4%;
+		}
+
+		.tempUnit{
+			/* border: 2px solid; */
+			width: 30%;
+			display: flex;
+			align-items: center;
+			justify-content: flex-end;
+			height: 80%;
+		}
+		.tempUnit select{
+			width: 100%;
+			height: 100%;
+			border: none;
+			border-bottom: 0.2em inset lightblue;
+			border-right: 0.1em outset lightblue;
+			border-radius: 0.5em;
+			outline: none;
+			color: rgb(75, 74, 74);
+		}
+
+
+		.result{
+			/* border: 2px solid; */
+			width: 100%;
+			height: 10em;
+			display: none;
+			align-items: center;
+			flex-direction: column;
+			justify-content: center;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			/* border: 2px solid; */
+		}
+
+		.result p{
+			/* border: 2px solid; */
+			width: 100%;
+			height: 20%;
+			display: flex;
+			text-align: center;
+			align-items: center;
+			justify-content: center;
+			font-size: 2vmin;
+			font-weight: 500;
+			color: rgb(48, 47, 47);
+		}
+
+		
+		
+		.buttons{
+			width: 100%;
+			height: auto;
+			/* border: 2px solid ; */
+			position: absolute;
+			bottom: 10%;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.convert-btn{
+			width: 100%;
+			/* border: 2px solid red; */
+			height: 2.5em;
+			display: flex;
+			align-items: center;
+			justify-content: space-around;
+			/* padding-right: 4.5%; */
+		}
+
+		.convert-btn .convert{
+			/* border: 2px solid; */
+			width: 20%;
+			height: 80%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background-color: rgb(188, 217, 243);
+			border-radius: 2em;
+			font-weight: 600;
+			padding: 2%;
+			font-size: 2vmin;
+			color: rgb(29, 29, 29);
+			cursor: pointer;
+		}
+		.reset-clear{
+			width: 100%;
+			/* border: 2px solid red; */
+			height: 2.5em;
+			display: flex;
+			align-items: center;
+			justify-content: space-evenly;
+		}
+
+		.convert-btn .reset-btn {
+			/* border: 2px solid; */
+			width: 20%;
+			height: 80%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background-color: rgb(188, 217, 243);
+			border-radius: 2em;
+			font-weight: 600;
+			padding: 2%;
+			font-size: 2vmin;
+			color: rgb(29, 29, 29);
+			cursor: pointer;
+		}
+
+		
+
+		.animation{
+			/* border: 2px solid; */
+			width: 100%;
+			height: 10em;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			display: none;
+			align-items: center;
+			justify-content: center;
+			z-index: 2;
+		}
+
+		.circle{
+			border: 0.2em solid rgb(201, 225, 233);
+			border-top: 0.19em solid rgb(51, 51, 51);
+			width: 12%;
+			height: 30%;
+			border-radius: 50%;
+			padding: 2%;
+			animation: exis .8s infinite ease;
+		}
+
+
+		@keyframes exis{
+			to{
+				transform: rotate(360deg);
+			}
+		}
+
+		@media(max-width: 700px){
+			#main{
+				width: 20em;
+			}
+
+			.value-box{
+				flex-direction: column;
+			}
+
+			.tempUnit{
+				width: 70%;
+				margin-top: 5%;
+			}
+
+
+			.circle{
+				height: 20%;
+				width: 10%;
+			}
+
+
+			@media(max-width: 500px){
+				.result p{
+					font-size: 1em;
+				}
+
+				.convert-btn .convert{
+					font-size: .9em;
+				}
+
+				.convert-btn .reset-btn{
+					font-size: 0.9em;
+				}
+
+				h1{
+					font-size: 1.2em;
+				}
+
+				.circle{
+					height: 20%;
+					width: 10%;
+				}
+			}
+
+			@media(max-width: 300px){
+				.result p{
+					font-size: 5vmin;
+				}
+
+				.convert-btn .convert{
+					font-size: 4.8vmin;
+				}
+
+				.convert-btn .reset-btn{
+					font-size: 4.8vmin;
+				}
+
+				h1{
+					font-size: 0.8em;
+				}
+
+				.circle{
+					height: 12%;
+					width: 8%;
+				}
+			}
+
+		}
+	</style>
+</head>
+<body>
+	<div id="main">
+		<h1>Temp<span>erature</span> &nbsp;Calculator</h1>
+		<div class="value-box">
+			<div class="tempNum">
+				<input type="number" placeholder="Type temperature number">
+			</div>
+			<div class="tempUnit">
+				<select name="Units">
+					<option value="n">None</option>
+					<option value="c">Celcius</option>
+					<option value="k">Kelvin</option>
+					<option value="f">Feranhite</option>
+				</select>
+			</div>
+		</div>
+		<div class="animation">
+			<div class="circle"></div>
+		</div>
+		<div class="result">
+			<p class="res-1"></p>
+			<p class="res-2"></p>
+		</div>
+
+
+		<div class="buttons">
+			<div class="convert-btn">
+				<div class="convert">Convert</div>
+				<div class="reset-btn">Reset</div>
+			</div>
+			
+		</div>
+	</div>
+	<script>
+		
+let select=document.querySelector("select");
+let input=document.querySelector("input");
+let det=document.querySelector(".res-1");
+let det2=document.querySelector(".res-2");
+let buttons=document.querySelector(".buttons");
+let result=document.querySelector(".result");
+let animation=document.querySelector(".animation");
+
+function celsius(val){
+    let kelvin=val + 273.15;
+    det.innerText=`celsius in kelvin is ${Math.floor(kelvin)}`;
+    det2.innerText=`celsius in feranhite is ${Math.floor((val*9/5)+32)}`;
+}
+
+function kelvin(val){
+    det.innerText=`kelvin in celsius is ${Math.floor(val-273.15)}`;
+    det2.innerText=`kelvin in Feranhite is ${Math.floor((val*9/5)-459.67)}`;
+}
+
+
+function feranhite(val){
+    det.innerText=`Feranhite in celcius is ${Math.floor((val-32)/1.8)}`;
+    det2.innerText=`Feranhite in kelvin is ${Math.floor((val-32)/1.8+273.15)}`;
+}
+
+
+buttons.addEventListener("click", (e)=>{
+    if
+    (e.target.classList.contains("convert"))
+    {
+      animation.style.display="flex";
+      setTimeout(()=>{
+        animation.style.display="none";
+        result.style.display="flex";
+        if
+        (input.value !="" && select.value !="")
+        {
+             if
+             (select.value =="n")
+             {
+                 result.style.display="flex";
+                 det.style.display="block"
+                 det.style.color="red";
+                det.innerText="Please select Temperature Unit";
+                det2.innerText="";
+                setTimeout(()=>{
+                 det.innerText="";
+                 det.style.color="";
+                },2000);
+             }
+             else if
+             (select.value =="c")
+             {            
+                 celsius(parseInt(input.value));
+             }
+             else if
+             (select.value =="k")
+             {
+                 kelvin(parseInt(input.value));
+             }
+             else if
+             (select.value =="f")
+             {
+                 feranhite(parseInt(input.value));
+             }
+        }
+        else if
+        (input.value ==""){
+         det.innerText="Please enter Temperature value";
+         det.style.color="red";
+         det2.innerText="";
+         setTimeout(()=>{
+             det.innerText="";
+             det.style.color="";
+            },2000);
+        }
+      },1000);
+
+    }else if(e.target.classList.contains("reset-btn")){
+        animation.style.display="flex";
+        setTimeout(()=>{
+            animation.style.display="none";
+            input.value="";
+            det.innerText="";
+            det2.innerText="";
+            result.style.display="none";
+            select.selectedIndex=0;
+        },1000)
+    }
+})
+
+
+window.addEventListener("load",(e)=>{
+    input.value=100;
+    select.selectedIndex=1;
+    result.style.display="flex";
+    celsius(parseInt(input.value));
+})
+
+	</script>
+</body>
+</html>
